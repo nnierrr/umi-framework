@@ -37,7 +37,7 @@ const LoginForm = (props) => {
         >
             <Grid.Column style={{ maxWidth: 450 }}>
                 <Header as="h1" color="standard" inverted textAlign="center">
-                    UMI | Framework
+                    umiSoda | Framework
                 </Header>
                 <Form size="large">
                     <Segment stacked>
