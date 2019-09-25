@@ -1,2 +1,2 @@
 // Auth
-export default LOGIN = 'LOGIN';
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";

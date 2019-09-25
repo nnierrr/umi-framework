@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { login } from '../../actions/authActions'
 import {
     Button,
     Form,
@@ -29,6 +31,11 @@ const LoginForm = (props) => {
         });
     };
 
+    const onSubmit = e => {
+        e.preventDefault();
+        props.login(user);
+    }
+
     return (
         <Grid
             textAlign="center"
@@ -39,7 +46,7 @@ const LoginForm = (props) => {
                 <Header as="h1" color="standard" inverted textAlign="center">
                     umiSoda | Framework
                 </Header>
-                <Form size="large">
+                <Form onSubmit={onSubmit} size="large">
                     <Segment stacked>
                         <Form.Input
                             fluid
@@ -67,7 +74,10 @@ const LoginForm = (props) => {
                 </Form>
                 <Header as="h4" color="satndard" inverted textAlign="center">
                     No Account?{" "}
-                    <span className="ui yellow small header" onClick={changePage}>
+                    <span
+                        className="ui yellow small header"
+                        onClick={changePage}
+                    >
                         Register
                     </span>
                 </Header>
@@ -76,4 +86,8 @@ const LoginForm = (props) => {
     );
 }
 
-export default LoginForm
+const mapStateToProps = state => {
+    return { user: state.user };
+};
+
+export default connect(mapStateToProps, { login })(LoginForm);
