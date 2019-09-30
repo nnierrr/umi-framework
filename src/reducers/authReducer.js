@@ -24,7 +24,8 @@ export default (state = [], action) => {
                 ...state,
                 ...action.payload,
                 isAuthenticated: true,
-                loading: false
+                loading: false,
+                errors: [],
             };
         case LOGIN_SUCCESS:
             localStorage.setItem("token", action.payload.token);
@@ -44,7 +45,7 @@ export default (state = [], action) => {
                 isAuthenticated: false,
                 loading: false,
                 user: null,
-                error: action.payload
+                errors: action.payload
             };
         default:
             return state;

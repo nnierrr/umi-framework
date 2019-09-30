@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import _ from 'lodash';
 import { Button, Form, Grid, Header, Segment } from "semantic-ui-react";
 import { register } from "../../actions/authActions";
 import { connect } from "react-redux";
@@ -9,8 +10,15 @@ const RegisterForm = props => {
     email: "",
     password: "",
     password2: "",
-    user_role: ""
+    user_role: "blogger"
   });
+
+  const [errorFields, setErrorFields] = useState({
+    nameField: false,
+    emailField: false,
+    passwordField: false,
+    password2Field: false
+  })
 
   const user_roles = [
     { key: "b", text: "Blogger", value: "blogger" },
@@ -19,7 +27,21 @@ const RegisterForm = props => {
 
   const { name, email, password, password2, user_role } = user;
 
-  const { getPage } = props;
+    const { getPage, errors, register } = props;
+
+    useEffect(() => {
+        if(!_.isEmpty(errors)) {
+            errors.map(error  => {
+                if(error.param === "home") {
+                    setErrorFields({
+                        ...errorFields,
+                        
+                    })
+                }
+            })
+        }
+
+  },[errors]);
 
   const changePage = () => {
     getPage("login");
@@ -27,11 +49,10 @@ const RegisterForm = props => {
 
   const onSubmit = e => {
     e.preventDefault();
-    props.register(user);
+    register(user);
   }
 
   const onChangeUserRole = (e ,{value}) => {
-
     setUser({
         ...user,
         user_role: value
@@ -39,7 +60,6 @@ const RegisterForm = props => {
   }
 
   const onChange = e => {
-
       setUser({
         ...user,
         [e.target.name]: e.target.value
@@ -119,7 +139,11 @@ const RegisterForm = props => {
 };
 
 const mapStateToProps = state => {
-  return { user: state.user };
+  const {user, errors} = state.auth;
+  
+  return { user,
+           errors
+         };
 };
 
 export default connect(mapStateToProps, { register })(RegisterForm);

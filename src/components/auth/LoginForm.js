@@ -67,6 +67,9 @@ const LoginForm = (props) => {
                             value={password}
                             onChange={onChange}
                         />
+                        <Header as="h4" color="satndard" color="yellow" textAlign="left" style={{ marginTop: '14px'}}>
+                            Forget Password
+                        </Header>
                         <Button color="yellow" fluid size="large">
                             Login
                         </Button>
