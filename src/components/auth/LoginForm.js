@@ -11,71 +11,28 @@ import {
   Message
 } from "semantic-ui-react";
 
-const LoginForm = props => {
+const LoginForm = ({ getPage, login }) => {
   const [user, setUser] = useState({
     email: "",
     password: ""
   });
 
-  const [emailError, setEmailError] = useState({
-    isError: false,
-    msg: ""
-  });
-  const [passwordError, setPasswordError] = useState({
-    isError: false,
-    msg: ""
-  });
-
-  const [invalidCredential, setInvalidCredential] = useState(false);
-
-  const { getPage, errors } = props;
-
   const { email, password } = user;
-
-  useEffect(() => {
-    if (_.isArray(errors)) {
-      if (!_.isEmpty(errors)) {
-        errors.map(error => {
-          error.param === "email" &&
-            setEmailError({ ...emailError, isError: true, msg: error.msg });
-          error.param === "password" &&
-            setPasswordError({
-              ...passwordError,
-              isError: true,
-              msg: error.msg
-            });
-        });
-      }
-    } else {
-      setInvalidCredential(true);
-      console.log(invalidCredential);
-    }
-  }, [errors]);
 
   const changePage = () => {
     getPage("register");
   };
 
   const onChange = e => {
-    clearAlert(e.target.name);
     setUser({
       ...user,
       [e.target.name]: e.target.value
     });
   };
 
-  const clearAlert = field => {
-    setInvalidCredential(false);
-
-    field === "email" &&
-      setEmailError({ ...emailError, isError: false, msg: "" });
-    field === "password" &&
-      setPasswordError({ ...passwordError, isError: false, msg: "" });
-  };
-
   const onSubmit = e => {
     e.preventDefault();
-    props.login(user);
+    login(user);
   };
 
   return (
@@ -86,13 +43,6 @@ const LoginForm = props => {
         </Header>
         <Form onSubmit={onSubmit} size="large">
           <Segment stacked>
-            {invalidCredential && (
-              <Message
-                error
-                header="Invalid Credentail"
-                content="Your input a wrong email/password"
-              />
-            )}
             <Form.Input
               fluid
               icon="user"
@@ -100,31 +50,19 @@ const LoginForm = props => {
               placeholder="E-mail Address"
               name="email"
               type="email"
-              error={emailError.isError}
               value={email}
               onChange={onChange}
             />
-            {emailError.isError && (
-              <span className="ui red small header" onClick={changePage}>
-                {emailError.msg}
-              </span>
-            )}
             <Form.Input
               fluid
               icon="lock"
               iconPosition="left"
               placeholder="Password"
-              error={passwordError.isError}
               type="password"
               name="password"
               value={password}
               onChange={onChange}
             />
-            {passwordError.isError && (
-              <span className="ui red small header" onClick={changePage}>
-                {passwordError.msg}
-              </span>
-            )}
             <Button color="yellow" fluid size="large">
               Login
             </Button>
@@ -144,8 +82,7 @@ const LoginForm = props => {
 const mapStateToProps = state => {
   console.log(state.auth);
   return {
-    user: state.auth.user,
-    errors: state.auth.errors
+    user: state.auth.user
   };
 };
 

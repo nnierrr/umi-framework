@@ -16,17 +16,10 @@ export const login = formValues => async dispatch => {
       payload: response.data
     });
   } catch (err) {
-    if (err.response.data.msg === "Invalid Credentials") {
-      dispatch({
-        type: LOGIN_FAIL,
-        payload: err.response.data.msg
-      });
-    } else {
-      dispatch({
-        type: LOGIN_FAIL,
-        payload: err.response.data.errors
-      });
-    }
+    dispatch({
+      type: LOGIN_FAIL,
+      payload: err.response.data.errors
+    });
   }
 };
 
