@@ -35,7 +35,6 @@ const RegisterForm = props => {
                 if(error.param === "home") {
                     setErrorFields({
                         ...errorFields,
-                        
                     })
                 }
             })

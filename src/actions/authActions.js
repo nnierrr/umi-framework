@@ -5,7 +5,6 @@ import {
   LOGIN_FAIL,
   REGISTER_FAIL
 } from "../reducers/types";
-import _ from "lodash";
 
 export const login = formValues => async dispatch => {
   try {
@@ -15,6 +14,7 @@ export const login = formValues => async dispatch => {
       type: LOGIN_SUCCESS,
       payload: response.data
     });
+
   } catch (err) {
     if (err.response.data.msg === "Invalid Credentials") {
       dispatch({
@@ -37,6 +37,7 @@ export const register = formValues => async dispatch => {
       type: REGISTER_SUCCESS,
       payload: response.data
     });
+
   } catch (err) {
     dispatch({
       type: REGISTER_FAIL,

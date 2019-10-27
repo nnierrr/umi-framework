@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import { connect } from "react-redux";
 import { login } from "../../actions/authActions";
+import { alert } from "../../actions/alertActions";
 import {
   Button,
   Form,
@@ -11,7 +12,7 @@ import {
   Message
 } from "semantic-ui-react";
 
-const LoginForm = props => {
+const LoginForm = ( getPage, errors, login, alert) => {
   const [user, setUser] = useState({
     email: "",
     password: ""
@@ -28,8 +29,6 @@ const LoginForm = props => {
 
   const [invalidCredential, setInvalidCredential] = useState(false);
 
-  const { getPage, errors } = props;
-
   const { email, password } = user;
 
   useEffect(() => {
@@ -37,12 +36,13 @@ const LoginForm = props => {
       if (!_.isEmpty(errors)) {
         errors.map(error => {
           error.param === "email" &&
-            setEmailError({ ...emailError, isError: true, msg: error.msg });
+            alert(error.msg, 'red');
+            setEmailError({ ...emailError, isError: true });
           error.param === "password" &&
+            alert(error.msg, 'red');
             setPasswordError({
               ...passwordError,
-              isError: true,
-              msg: error.msg
+              isError: true
             });
         });
       }
@@ -75,7 +75,7 @@ const LoginForm = props => {
 
   const onSubmit = e => {
     e.preventDefault();
-    props.login(user);
+    login(user);
   };
 
   return (
@@ -84,15 +84,9 @@ const LoginForm = props => {
         <Header as="h1" color="standard" inverted textAlign="center">
           umiSoda | Framework
         </Header>
+
         <Form onSubmit={onSubmit} size="large">
           <Segment stacked>
-            {invalidCredential && (
-              <Message
-                error
-                header="Invalid Credentail"
-                content="Your input a wrong email/password"
-              />
-            )}
             <Form.Input
               fluid
               icon="user"
@@ -120,11 +114,6 @@ const LoginForm = props => {
               value={password}
               onChange={onChange}
             />
-            {passwordError.isError && (
-              <span className="ui red small header" onClick={changePage}>
-                {passwordError.msg}
-              </span>
-            )}
             <Button color="yellow" fluid size="large">
               Login
             </Button>
@@ -142,7 +131,6 @@ const LoginForm = props => {
 };
 
 const mapStateToProps = state => {
-  console.log(state.auth);
   return {
     user: state.auth.user,
     errors: state.auth.errors
@@ -150,6 +138,6 @@ const mapStateToProps = state => {
 };
 
 export default connect(
-  mapStateToProps,
-  { login }
+    mapStateToProps,
+    { login, alert }
 )(LoginForm);
