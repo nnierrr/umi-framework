@@ -12,65 +12,23 @@ import {
   Message
 } from "semantic-ui-react";
 
-const LoginForm = ( getPage, errors, login, alert) => {
+const LoginForm = ({ getPage, login }) => {
   const [user, setUser] = useState({
     email: "",
     password: ""
   });
 
-  const [emailError, setEmailError] = useState({
-    isError: false,
-    msg: ""
-  });
-  const [passwordError, setPasswordError] = useState({
-    isError: false,
-    msg: ""
-  });
-
-  const [invalidCredential, setInvalidCredential] = useState(false);
-
   const { email, password } = user;
-
-  useEffect(() => {
-    if (_.isArray(errors)) {
-      if (!_.isEmpty(errors)) {
-        errors.map(error => {
-          error.param === "email" &&
-            alert(error.msg, 'red');
-            setEmailError({ ...emailError, isError: true });
-          error.param === "password" &&
-            alert(error.msg, 'red');
-            setPasswordError({
-              ...passwordError,
-              isError: true
-            });
-        });
-      }
-    } else {
-      setInvalidCredential(true);
-      console.log(invalidCredential);
-    }
-  }, [errors]);
 
   const changePage = () => {
     getPage("register");
   };
 
   const onChange = e => {
-    clearAlert(e.target.name);
     setUser({
       ...user,
       [e.target.name]: e.target.value
     });
-  };
-
-  const clearAlert = field => {
-    setInvalidCredential(false);
-
-    field === "email" &&
-      setEmailError({ ...emailError, isError: false, msg: "" });
-    field === "password" &&
-      setPasswordError({ ...passwordError, isError: false, msg: "" });
   };
 
   const onSubmit = e => {
@@ -94,21 +52,14 @@ const LoginForm = ( getPage, errors, login, alert) => {
               placeholder="E-mail Address"
               name="email"
               type="email"
-              error={emailError.isError}
               value={email}
               onChange={onChange}
             />
-            {emailError.isError && (
-              <span className="ui red small header" onClick={changePage}>
-                {emailError.msg}
-              </span>
-            )}
             <Form.Input
               fluid
               icon="lock"
               iconPosition="left"
               placeholder="Password"
-              error={passwordError.isError}
               type="password"
               name="password"
               value={password}
@@ -132,8 +83,7 @@ const LoginForm = ( getPage, errors, login, alert) => {
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user,
-    errors: state.auth.errors
+    user: state.auth.user
   };
 };
 
