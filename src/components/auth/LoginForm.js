@@ -12,13 +12,24 @@ import {
   Message
 } from "semantic-ui-react";
 
-const LoginForm = ({ getPage, login }) => {
+const LoginForm = ({ getPage, login, errors }) => {
   const [user, setUser] = useState({
     email: "",
     password: ""
   });
 
+  const [errorMsg, setMsgError] = useState([]);
+
   const { email, password } = user;
+
+  useEffect(() => {
+    if (!_.isEmpty(errors)) {
+      errors.map(error => {
+        setMsgError(msg => [...msg, error.msg]);
+      });
+      console.log(errorMsg);
+    }
+  }, [errors]);
 
   const changePage = () => {
     getPage("register");
@@ -70,6 +81,11 @@ const LoginForm = ({ getPage, login }) => {
             </Button>
           </Segment>
         </Form>
+
+        {!_.isEmpty(errorMsg) && (
+          <Message error header="Oopsie!" list={errorMsg} />
+        )}
+
         <Header as="h4" color="satndard" inverted textAlign="center">
           No Account?{" "}
           <span className="ui yellow small header" onClick={changePage}>
@@ -83,7 +99,8 @@ const LoginForm = ({ getPage, login }) => {
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user
+    user: state.auth.user,
+    errors: state.auth.errors
   };
 };
 
