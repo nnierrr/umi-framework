@@ -1,9 +1,10 @@
 import boilnierplate from "../apis/boilnierplate";
 import {
-  LOGIN_SUCCESS,
-  REGISTER_SUCCESS,
-  LOGIN_FAIL,
-  REGISTER_FAIL
+    LOGIN_SUCCESS,
+    REGISTER_SUCCESS,
+    LOGIN_FAIL,
+    REGISTER_FAIL,
+    CLEAR_ERRORS
 } from "../reducers/types";
 
 export const login = formValues => async dispatch => {
@@ -20,6 +21,9 @@ export const login = formValues => async dispatch => {
       type: LOGIN_FAIL,
       payload: err.response.data.errors
     });
+
+
+    setTimeout(() => dispatch({ type: CLEAR_ERRORS }), 5000);
   }
 };
 
@@ -36,5 +40,8 @@ export const register = formValues => async dispatch => {
       type: REGISTER_FAIL,
       payload: err.response.data.errors
     });
+
+
+    setTimeout(() => dispatch({ type: CLEAR_ERRORS }), 5000);
   }
 };

@@ -3,13 +3,23 @@ import {
     REMOVE_ALERT
 } from "../reducers/types";
 
+
+import React from "react";
+
+import {
+    Message
+} from "semantic-ui-react";
+
+
 // Set Alert
-export const alert = (msg, color) => dispatch => {
+export const alert = (messages, color) => dispatch => {
     
     dispatch({
         type: SHOW_ALERT,
-        payload: { msg, color }
+        payload: { messages, color }
     });
 
     setTimeout(() => dispatch({ type: REMOVE_ALERT }), 5000);
+
+    return <Message error header="Oopsie!" list={messages} />;
 }

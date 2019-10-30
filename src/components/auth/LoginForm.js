@@ -28,6 +28,8 @@ const LoginForm = ({ getPage, login, errors }) => {
         setMsgError(msg => [...msg, error.msg]);
       });
       console.log(errorMsg);
+    } else {
+      setMsgError([]);
     }
   }, [errors]);
 

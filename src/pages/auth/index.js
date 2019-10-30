@@ -14,7 +14,6 @@ const AuthPage = () => {
 
     return (
         <div className="container">
-
             {page === "login" && <LoginForm getPage={getPage} />}
             {page === "register" && <RegisterForm getPage={getPage} />}
         </div>

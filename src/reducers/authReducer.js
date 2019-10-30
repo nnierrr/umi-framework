@@ -36,10 +36,18 @@ export default (state = [], action) => {
         loading: false,
         errors: []
       };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        token: null,
+        isAuthenticated: false,
+        loading: false,
+        user: null,
+        errors: []
+      };
     case REGISTER_FAIL:
     case AUTH_ERROR:
     case LOGIN_FAIL:
-    case CLEAR_ERRORS:
     case LOGOUT:
       localStorage.removeItem("token");
       return {
