@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import _ from 'lodash';
-import { Button, Form, Grid, Header, Segment } from "semantic-ui-react";
+import { Button, Form, Grid, Header, Segment, Message } from "semantic-ui-react";
 import { register } from "../../actions/authActions";
 import { connect } from "react-redux";
 
@@ -13,13 +13,6 @@ const RegisterForm = props => {
     user_role: "blogger"
   });
 
-  const [errorFields, setErrorFields] = useState({
-    nameField: false,
-    emailField: false,
-    passwordField: false,
-    password2Field: false
-  })
-
   const user_roles = [
     { key: "b", text: "Blogger", value: "blogger" },
     { key: "a", text: "CMS Admin", value: "cms-admin" }
@@ -27,20 +20,20 @@ const RegisterForm = props => {
 
   const { name, email, password, password2, user_role } = user;
 
+    const [errorMsg, setMsgError] = useState([]);
+
     const { getPage, errors, register } = props;
 
     useEffect(() => {
-        if(!_.isEmpty(errors)) {
-            errors.map(error  => {
-                if(error.param === "home") {
-                    setErrorFields({
-                        ...errorFields,
-                    })
-                }
-            })
+        if (!_.isEmpty(errors)) {
+            errors.map(error => {
+                setMsgError(msg => [...msg, error.msg]);
+            });
+            console.log(errorMsg);  
+        } else {
+            setMsgError([]);
         }
-
-  },[errors]);
+    }, [errors]);
 
   const changePage = () => {
     getPage("login");
@@ -119,16 +112,22 @@ const RegisterForm = props => {
                           fluid
                           options={user_roles}
                           name="user_role"
+                          value={user_role}
                           onChange={onChangeUserRole}
-                          placeholder='User Role'
+                          placeholder='User Role'   
                       />
                       <Button color="yellow" fluid size="large">
                           Register
                       </Button>
                   </Segment>
               </Form>
+
+              {!_.isEmpty(errorMsg) && (
+                  <Message error header="Oopsie!" list={errorMsg} />
+              )}
+
               <Header as="h4" color="standard" inverted textAlign="center">
-                  <span className="ui yellow small header" onClick={changePage}>
+                  <span className="ui yellow small header" style={{ cursor: 'grab' }} onClick={changePage}>
                       Back to Login
                   </span>
               </Header>
@@ -138,11 +137,11 @@ const RegisterForm = props => {
 };
 
 const mapStateToProps = state => {
-  const {user, errors} = state.auth;
-  
-  return { user,
-           errors
-         };
+    console.log(state);
+    return {
+        user: state.auth.user,
+        errors: state.auth.errors
+    };
 };
 
-export default connect(mapStateToProps, { register })(RegisterForm);
+export default connect(mapStateToProps, { register, alert })(RegisterForm);

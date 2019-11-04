@@ -50,52 +50,60 @@ const LoginForm = ({ getPage, login, errors }) => {
   };
 
   return (
-    <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
-      <Grid.Column style={{ maxWidth: 450 }}>
-        <Header as="h1" color="standard" inverted textAlign="center">
-          umiSoda | Framework
-        </Header>
+      <Grid
+          textAlign="center"
+          style={{ height: "100vh" }}
+          verticalAlign="middle"
+      >
+          <Grid.Column style={{ maxWidth: 450 }}>
+              <Header as="h1" color="standard" inverted textAlign="center">
+                  umiSoda | Framework
+              </Header>
 
-        <Form onSubmit={onSubmit} size="large">
-          <Segment stacked>
-            <Form.Input
-              fluid
-              icon="user"
-              iconPosition="left"
-              placeholder="E-mail Address"
-              name="email"
-              type="email"
-              value={email}
-              onChange={onChange}
-            />
-            <Form.Input
-              fluid
-              icon="lock"
-              iconPosition="left"
-              placeholder="Password"
-              type="password"
-              name="password"
-              value={password}
-              onChange={onChange}
-            />
-            <Button color="yellow" fluid size="large">
-              Login
-            </Button>
-          </Segment>
-        </Form>
+              <Form onSubmit={onSubmit} size="large">
+                  <Segment stacked>
+                      <Form.Input
+                          fluid
+                          icon="user"
+                          iconPosition="left"
+                          placeholder="E-mail Address"
+                          name="email"
+                          type="email"
+                          value={email}
+                          onChange={onChange}
+                      />
+                      <Form.Input
+                          fluid
+                          icon="lock"
+                          iconPosition="left"
+                          placeholder="Password"
+                          type="password"
+                          name="password"
+                          value={password}
+                          onChange={onChange}
+                      />
+                      <Button color="yellow" fluid size="large">
+                          Login
+                      </Button>
+                  </Segment>
+              </Form>
 
-        {!_.isEmpty(errorMsg) && (
-          <Message error header="Oopsie!" list={errorMsg} />
-        )}
+              {!_.isEmpty(errorMsg) && (
+                  <Message error header="Oopsie!" list={errorMsg} />
+              )}
 
-        <Header as="h4" color="satndard" inverted textAlign="center">
-          No Account?{" "}
-          <span className="ui yellow small header" onClick={changePage}>
-            Register
-          </span>
-        </Header>
-      </Grid.Column>
-    </Grid>
+              <Header as="h4" color="satndard" inverted textAlign="center">
+                  No Account?{" "}
+                  <span
+                      className="ui yellow small header"
+                      style={{ cursor: 'grab' }}
+                      onClick={changePage}
+                  >
+                      Register
+                  </span>
+              </Header>
+          </Grid.Column>
+      </Grid>
   );
 };
 
